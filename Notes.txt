@@ -1,0 +1,53 @@
+By default, Terraform looks for terraform.tfvars (or *.auto.tfvars) to load variable values.
+✅ If you don't create terraform.tfvars:
+    Terraform will not automatically assign values to your variables
+    it wait to have the values during runtime
+✅ If you create a file with a different name (e.g. dev.tfvars):
+    Terraform will not use it automatically.
+    To use it, you must pass it explicitly:
+    terraform apply -var-file="dev.tfvars"
+
+--------------------------------------------------------------------------------------------
+✅ Using dev.tfvars and prod.tfvars Safely
+If you're using multiple .tfvars files like dev.tfvars and prod.tfvars, you must avoid state file conflicts.
+Problem: If your backend config uses: key = "terraform.tfstate"
+Then all environments (dev, prod, etc.) will use the same state file, which can cause one to override the other
+
+Solution 1: Dynamic Backend Key
+Change the backend key to use a variable: key = "${var.env}.tfstate"
+Then apply like this: terraform apply -var-file="dev.tfvars", terraform apply -var-file="prod.tfvars"
+❗Note: Backend config is processed before your variables and code, so var.env doesn't work directly in backend blocks.
+
+Solution 2: Use Terraform Workspaces (Recommended)
+Terraform handles this cleanly using workspaces, which separate state files automatically.
+✔️ How to Use:
+List workspaces: terraform workspace list >> Default: you'll see default
+Create a new workspace:
+    terraform workspace new prod
+    terraform workspace new dev
+Switch between them:
+    terraform workspace select dev
+    terraform apply -var-file="dev.tfvars"
+    terraform workspace select prod
+    terraform apply -var-file="prod.tfvars"
+✅ Result: Terraform stores state files like:
+    s3://your-bucket-name/env:/dev/terraform.tfstate
+    s3://your-bucket-name/env:/prod/terraform.tfstate
+"env:/  prod/ >> folder for your workspace include separated terraform.tfstate
+    you handle the problem without edit the backend file"
+--------------------------------------------------------------------------------------
+count = 2 >> 
+If you already have an EC2 instance created in Terraform and you change its configuration to use count = 2,
+then run terraform apply, here's exactly what happens:
+    Terraform destroys the old single EC2 instance.
+    Then it creates 2 new EC2 instances.
+Why? Because resources without count and with count are treated differently in Terraform's state.
+So, Terraform treats it as:
+    The original instance no longer exists.
+    Two new instances are needed (aws_instance.web[0] and aws_instance.web[1]).
+🛑 Important Warning:
+    Any data on the old EC2 instance will be lost (unless you take measures like using an EBS volume).
+    This is not an in-place update, it's a destroy and recreate operation.
+--------------------------------------------------------------------------------------
+You can use count as a trick to create some resources in workspace and not create it in another
+define variable, assign its value in each prod.tfvars, dev.tfvars

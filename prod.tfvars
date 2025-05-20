@@ -1,0 +1,10 @@
+# vpc_cidr = "172.16.0.0/16"
+# PublicSubnet1_cidr = "172.16.1.0/24"
+# PublicSubnet2_cidr = "172.16.2.0/24"
+# privateSubnet1_cidr = "172.16.3.0/24"
+# privateSubnet2_cidr = "1172.16.4.0/24"
+# region = "us-east-1"
+# ami = "ami-0e58b56aa4d64231b" 
+# instance_type = "t2.micro"
+# env = "prod"
+# bastion_count= 0
