@@ -10,10 +10,10 @@ resource "aws_route_table" "pubtable" {
 }
 
 resource "aws_route_table_association" "public_route_association_1" {
-  subnet_id      = aws_subnet.PublicSubnet1.id
+  subnet_id      = aws_subnet.subnets["PublicSubnet1"].id
   route_table_id = aws_route_table.pubtable.id
 }
 resource "aws_route_table_association" "public_route_association_2" {
-  subnet_id      = aws_subnet.PublicSubnet2.id
+  subnet_id      = aws_subnet.subnets["PublicSubnet2"].id
   route_table_id = aws_route_table.pubtable.id
 }

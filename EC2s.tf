@@ -3,7 +3,7 @@ resource "aws_instance" "Bastion" {
 #   bastion_count = var.bastion_count
   ami           = var.ami
   instance_type = var.instance_type
-  subnet_id = aws_subnet.PublicSubnet1.id
+  subnet_id =  aws_subnet.subnets["PublicSubnet1"].id
   associate_public_ip_address = true
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   key_name = aws_key_pair.key.key_name
@@ -19,7 +19,7 @@ resource "aws_instance" "Bastion" {
 resource "aws_instance" "application" {
   ami           = var.ami
   instance_type = var.instance_type
-  subnet_id = aws_subnet.PrivateSubnet1.id
+  subnet_id = aws_subnet.subnets["PublicSubnet1"].id
   vpc_security_group_ids = [aws_security_group.allow_ssh_3000.id]
   key_name = aws_key_pair.key.key_name
   

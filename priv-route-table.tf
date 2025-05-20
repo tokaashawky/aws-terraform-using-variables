@@ -10,10 +10,10 @@ resource "aws_route_table" "privtable" {
 }
 
 resource "aws_route_table_association" "private_route_association_1" {
-  subnet_id      = aws_subnet.PrivateSubnet1.id
+  subnet_id      = aws_subnet.subnets["PrivateSubnet1"].id
   route_table_id = aws_route_table.privtable.id
 }
 resource "aws_route_table_association" "private_route_association_2" {
-  subnet_id      = aws_subnet.PrivateSubnet2.id
+  subnet_id      = aws_subnet.subnets["PrivateSubnet2"].id
   route_table_id = aws_route_table.privtable.id
 }
