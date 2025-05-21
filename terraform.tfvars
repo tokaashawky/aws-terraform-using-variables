@@ -32,3 +32,7 @@ subnets = [
     type = "private"   
 }
 ]
+db_username = "toka"
+db_password = "Zayton_812"
+db_instance_class = "db.t3.micro" 
+db_S_class = "gp2" 

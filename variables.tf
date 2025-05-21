@@ -45,3 +45,21 @@ variable subnets {
     type = string  # public or private
   }))
 }
+
+variable db_password {
+  type        = string
+  description = "RDS password"
+  sensitive   = true
+}
+variable db_username {
+  type        = string
+  description = "RDS username"
+}
+variable db_instance_class {
+  type        = string
+  description = "db_instance_class"
+}
+variable db_S_class {
+  type        = string
+  description = "db_Storage_class"
+}
