@@ -49,5 +49,43 @@ So, Terraform treats it as:
     Any data on the old EC2 instance will be lost (unless you take measures like using an EBS volume).
     This is not an in-place update, it's a destroy and recreate operation.
 --------------------------------------------------------------------------------------
-You can use count as a trick to create some resources in workspace and not create it in another
+You can use "count" as a trick to create some resources in workspace and don't create them in other
 define variable, assign its value in each prod.tfvars, dev.tfvars
+--------------------------------------------------------------------------------------
+in outputs.tf:
+-- option sensitive = true make the output not printed(used in sensitive data)
+-- since you define output you can retrieve its value:
+    terraform output vpc_id 
+output.tf is not just for printing. It's a powerful way to expose data from Terraform to other 
+tools, especially Ansible, scripts, or CI/CD pipelines
+You can use output.tf to collect EC2 instance IPs and create an inventory file for Ansible automatically
+-- Important in modules
+--------------------------------------------------------------------------------------
+provisioners
+•Provisioners can be used to model specific actions on the local machine or on a 
+remote machine in order to prepare servers or other infrastructure objects for 
+service.  only run after first creation of resource
+-- you can put it inside the resource
+    provisioner "local-exec" {
+        command = "echo The server's IP address is ${self.private_ip}"
+    }
+-- outside in null resource (you may need terraform init :)
+# just for test
+# resource null_resource run {
+#   provisioner "local-exec" {
+#     command = "mkdir test"
+#   }
+#   depends_on = [aws_instance.Bastion,aws_instance.application]
+# }
+
+When using null_resource with provisioner blocks 
+(like local-exec or remote-exec),
+Terraform only runs the provisioner the first time, unless the resource changes.
+To force it to run again:
+    terraform taint null_resource.run
+    terraform apply
+This marks the null_resource.run as tainted,
+so Terraform will destroy and recreate it, which re-triggers the provisioner.
+
+Remove the taint (undo it): terraform untaint null_resource.run
+This is useful if you tainted it by mistake and don’t want it to re-run on the next apply.

@@ -26,4 +26,7 @@ resource "aws_instance" "application" {
   tags = {
     Name = "application"
   }
+  provisioner "local-exec" {
+    command = "echo The server's IP address is ${self.private_ip}"
+ }
 }
