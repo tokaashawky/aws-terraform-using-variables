@@ -72,12 +72,18 @@ This Terraform project provisions a complete and secure AWS networking and compu
    terraform apply
    
 📎 Requirements
+
 Terraform >= 1.0
+
 AWS CLI configured
+
 IAM permissions to manage VPC, EC2, Secrets Manager, etc.
 
 🔧 Use Cases
+
 Dev/test environments with secure SSH access
+
 Ansible or remote automation using Terraform outputs
+
 Multi-AZ infrastructure with modular networking
 
