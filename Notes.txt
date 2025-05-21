@@ -89,3 +89,11 @@ so Terraform will destroy and recreate it, which re-triggers the provisioner.
 
 Remove the taint (undo it): terraform untaint null_resource.run
 This is useful if you tainted it by mistake and don’t want it to re-run on the next apply.
+--------------------------------------------------------------------------------------
+Terraform data resources are used to reference existing resources that are not managed by your 
+code, so you can read and use their attributes without managing or modifying them.
+Example: Using data to Reference an Existing VPC
+✅ Benefit
+    Read-only access to resources (no risk of changing/deleting them)
+    Useful for shared infrastructure
+    Keeps modules reusable and safe

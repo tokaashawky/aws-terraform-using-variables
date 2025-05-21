@@ -4,7 +4,7 @@ vpc_cidr = "10.10.0.0/16"
 # privateSubnet1_cidr = "10.10.3.0/24"
 # privateSubnet2_cidr = "10.10.4.0/24"
 region = "us-east-1"
-ami = "ami-0e58b56aa4d64231b" 
+# ami = "ami-0e58b56aa4d64231b" 
 instance_type = "t2.micro"
 subnets = [
 {

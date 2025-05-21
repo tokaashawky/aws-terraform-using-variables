@@ -1,7 +1,7 @@
 resource "aws_instance" "Bastion" {
 #   count =  2   # it mean it will create two EC2
 #   bastion_count = var.bastion_count
-  ami           = var.ami
+  ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   subnet_id =  aws_subnet.subnets["PublicSubnet1"].id
   associate_public_ip_address = true
@@ -17,7 +17,7 @@ resource "aws_instance" "Bastion" {
 }
 
 resource "aws_instance" "application" {
-  ami           = var.ami
+  ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   subnet_id = aws_subnet.subnets["PublicSubnet1"].id
   vpc_security_group_ids = [aws_security_group.allow_ssh_3000.id]
